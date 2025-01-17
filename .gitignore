@@ -1,0 +1,8 @@
+__pycache__/
+data/boreholes-processed/*.*
+data/models-age-facies/*.*
+figures/*.*
+manuscript/
+reports/
+slides/
+tmp/
