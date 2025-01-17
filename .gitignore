@@ -3,6 +3,7 @@ data/boreholes-processed/*.*
 data/models-age-facies/*.*
 figures/*.*
 manuscript/
+notebooks/*_checkpoints/
 reports/
 slides/
 tmp/
