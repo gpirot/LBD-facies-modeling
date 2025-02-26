@@ -187,6 +187,10 @@ def plot3sections(mx,ix,iy,iz,cmap,vx,vy,vz,labeltype='facies',figsize=None,font
     zmax=vz[-1]+dz/2
     vmin = mx[~np.isnan(mx)].min()-0.5
     vmax = mx[~np.isnan(mx)].max()+0.5
+    if labeltype=='facies':
+        vmin = -1.5
+        vmax = 3.5
+        facies_seq = [-1,0,1,2,3]
     section_zy = np.reshape(mx[:,:,ix],(nz,ny))
     section_zx = np.reshape(mx[:,iy,:],(nz,nx))
     section_yx = np.reshape(mx[iz,:,:],(ny,nx))
@@ -280,7 +284,7 @@ def plot3sections(mx,ix,iy,iz,cmap,vx,vy,vz,labeltype='facies',figsize=None,font
         section_yx_clr = np.ones((ny*nx,4))*np.nan
         for i in range(len(valnotnan)):
             if labeltype=='facies':
-                section_yx_clr[np.where(section_yx.flatten()==valnotnan[i]),:] = cmap(i)
+                section_yx_clr[np.where(section_yx.flatten()==valnotnan[i]),:] = cmap(np.where(facies_seq==valnotnan[i]))
             if labeltype=='age':
                 section_yx_clr[np.where(section_yx.flatten()==valnotnan[i]),:] = cmap(i/valnotnan.max())
         section_yx_clr[np.where((xx_sec_yx.flatten()==vx[ix])&(np.isnan(section_yx.flatten())==False)),:]=np.array(rgba_zy) # zy sec
@@ -295,7 +299,7 @@ def plot3sections(mx,ix,iy,iz,cmap,vx,vy,vz,labeltype='facies',figsize=None,font
     section_zy_clr = np.ones((nz*ny,4))*np.nan
     for i in range(len(valnotnan)):
         if labeltype=='facies':
-            section_zy_clr[np.where(section_zy.flatten()==valnotnan[i]),:] = cmap(i)
+            section_zy_clr[np.where(section_zy.flatten()==valnotnan[i]),:] = cmap(np.where(facies_seq==valnotnan[i]))
         if labeltype=='age':
             section_zy_clr[np.where(section_zy.flatten()==valnotnan[i]),:] = cmap(i/valnotnan.max())
             
@@ -311,7 +315,7 @@ def plot3sections(mx,ix,iy,iz,cmap,vx,vy,vz,labeltype='facies',figsize=None,font
     section_zx_clr = np.ones((nz*nx,4))*np.nan
     for i in range(len(valnotnan)):
         if labeltype=='facies':
-            section_zx_clr[np.where(section_zx.flatten()==valnotnan[i]),:] = cmap(i)
+            section_zx_clr[np.where(section_zx.flatten()==valnotnan[i]),:] = cmap(np.where(facies_seq==valnotnan[i]))
         if labeltype=='age':
             section_zx_clr[np.where(section_zx.flatten()==valnotnan[i]),:] = cmap(i/valnotnan.max())
     
@@ -326,9 +330,9 @@ def plot3sections(mx,ix,iy,iz,cmap,vx,vy,vz,labeltype='facies',figsize=None,font
     xx_sec_zy = np.ones(yy_sec_zy.shape) * vx[ixtmp]
     section_zy_clr = np.ones((nz*ny,4))*np.nan
     for i in range(len(valnotnan)):
-        section_zy_clr[np.where(section_zy.flatten()==valnotnan[i]),:] = cmap(i)
+        #section_zy_clr[np.where(section_zy.flatten()==valnotnan[i]),:] = cmap(i)
         if labeltype=='facies':
-            section_zy_clr[np.where(section_zy.flatten()==valnotnan[i]),:] = cmap(i)
+            section_zy_clr[np.where(section_zy.flatten()==valnotnan[i]),:] = cmap(np.where(facies_seq==valnotnan[i]))
         if labeltype=='age':
             section_zy_clr[np.where(section_zy.flatten()==valnotnan[i]),:] = cmap(i/valnotnan.max())
     
@@ -347,7 +351,7 @@ def plot3sections(mx,ix,iy,iz,cmap,vx,vy,vz,labeltype='facies',figsize=None,font
     section_zx_clr = np.ones((nz*nx,4))*np.nan
     for i in range(len(valnotnan)):
         if labeltype=='facies':
-            section_zx_clr[np.where(section_zx.flatten()==valnotnan[i]),:] = cmap(i)
+            section_zx_clr[np.where(section_zx.flatten()==valnotnan[i]),:] = cmap(np.where(facies_seq==valnotnan[i]))
         if labeltype=='age':
             section_zx_clr[np.where(section_zx.flatten()==valnotnan[i]),:] = cmap(i/valnotnan.max())
     
@@ -372,7 +376,8 @@ def plot3sections(mx,ix,iy,iz,cmap,vx,vy,vz,labeltype='facies',figsize=None,font
     
     fig.colorbar(im, cax=ax5,shrink=0.6,orientation='horizontal') #,shrink=0.6,fraction=.5
     if labeltype=='facies':
-        ax5.set_xticks(valnotnan)
+        
+        ax5.set_xticks(facies_seq)
         ax5.set_xticklabels(['basement', 'weathered-b', 'intermediate','coarse-grained','fine-grained'])  # vertically oriented colorbar  rotation = 45
     if labeltype=='age':
         ax5.set_xlabel('relative age')
